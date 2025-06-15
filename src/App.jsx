@@ -18,7 +18,7 @@ export const App = () => {
     } = useTodos();
 
     return (
-        <div className="max-w-[1200px] mx-auto bg-[#e0e5ec] shadow-inset rounded-xl text-gray-800 p-10 mt-20">
+        <div className="max-w-[980px]  mx-auto bg-[#e0e5ec] shadow-inset rounded-xl text-gray-800 p-10 mt-20">
             <h2 className="text-5xl font-bold text-center mb-6 bg-gradient-to-r from-teal-400 to-teal-800 text-transparent bg-clip-text">Todos list context</h2>
             {loading ? (
                 <Spinner />

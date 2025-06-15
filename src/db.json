@@ -1,29 +1,9 @@
 {
   "todos": [
     {
-      "title": "vpn ++",
-      "completed": true,
-      "id": 4
-    },
-    {
-      "title": "б",
-      "completed": true,
-      "id": 6
-    },
-    {
-      "title": "ж",
+      "title": "Create my life",
       "completed": false,
-      "id": 8
-    },
-    {
-      "title": "в",
-      "completed": false,
-      "id": 9
-    },
-    {
-      "title": "д ++",
-      "completed": false,
-      "id": 10
+      "id": 1
     }
   ]
 }
