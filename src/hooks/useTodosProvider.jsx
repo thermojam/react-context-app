@@ -1,76 +1,37 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useFetchTodos } from './useFetchTodos';
+import { useAddTodo } from './useAddTodo';
+import { useUpdateTodo } from './useUpdateTodo';
+import { useDeleteTodo } from './useDeleteTodo';
+import { useToggleTodo } from './useToggleTodo';
 import { useDebounce } from './useDebounce';
 
 export function useTodosProvider() {
-    const API_URL = 'http://localhost:3001/todos';
-
     const [todos, setTodos] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [searchInput, setSearchInput] = useState('');
+    const [search, setSearch] = useState('');
     const [sortAlpha, setSortAlpha] = useState(false);
+    const searchTimeout = useRef(null);
+    const debouncedSearch = useDebounce(search, 400);
 
-    const search = useDebounce(searchInput);
+    const fetchTodos = useFetchTodos(setTodos, setLoading);
+    const addTodo = useAddTodo(setTodos);
+    const updateTodo = useUpdateTodo(setTodos);
+    const deleteTodo = useDeleteTodo(setTodos);
+    const toggleTodoComplete = useToggleTodo(setTodos);
 
     useEffect(() => {
-        setLoading(true);
-        fetch(API_URL)
-            .then(res => res.json())
-            .then(data => setTodos(data))
-            .catch(err => console.error('Ошибка загрузки:', err))
-            .finally(() => setLoading(false));
+        fetchTodos();
     }, []);
 
-    const addTodo = (title) => {
-        const newTodo = { title, completed: false };
-        fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newTodo),
-        })
-            .then(res => res.json())
-            .then(data => setTodos(prev => [...prev, data]))
-            .catch(err => console.error('Ошибка добавления:', err));
-    };
-
-    const updateTodo = (id, updatedTitle) => {
-        fetch(`${API_URL}/${id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title: updatedTitle }),
-        })
-            .then(res => res.json())
-            .then(data =>
-                setTodos(prev => prev.map(todo => (todo.id === id ? { ...todo, ...data } : todo)))
-            )
-            .catch(err => console.error('Ошибка обновления:', err));
-    };
-
-    const toggleTodoComplete = (id, newStatus) => {
-        fetch(`${API_URL}/${id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ completed: newStatus }),
-        })
-            .then(res => res.json())
-            .then(updated =>
-                setTodos(prev =>
-                    prev.map(todo => (todo.id === id ? { ...todo, completed: updated.completed } : todo))
-                )
-            );
-    };
-
-    const deleteTodo = (id) => {
-        fetch(`${API_URL}/${id}`, { method: 'DELETE' })
-            .then(() => setTodos(prev => prev.filter(todo => todo.id !== id)))
-            .catch(err => console.error('Ошибка удаления:', err));
-    };
-
     const handleSearch = (e) => {
-        setSearchInput(e.target.value.toLowerCase());
+        const value = e.target.value.toLowerCase();
+        clearTimeout(searchTimeout.current);
+        searchTimeout.current = setTimeout(() => setSearch(value), 300);
     };
 
     const filteredTodos = todos
-        .filter(todo => todo.title.toLowerCase().includes(search))
+        .filter(todo => todo.title.toLowerCase().includes(debouncedSearch))
         .sort((a, b) => (sortAlpha ? a.title.localeCompare(b.title) : 0));
 
     return {

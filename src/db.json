@@ -1,9 +1,24 @@
 {
   "todos": [
     {
-      "title": "Create my life",
+      "title": "viteconfig",
       "completed": false,
-      "id": 1
+      "id": 3
+    },
+    {
+      "title": "npm run",
+      "completed": false,
+      "id": 4
+    },
+    {
+      "title": "added tailwind",
+      "completed": false,
+      "id": 5
+    },
+    {
+      "title": "postcss",
+      "completed": false,
+      "id": 6
     }
   ]
 }
