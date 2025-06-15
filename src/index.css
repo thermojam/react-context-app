@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+
+@font-face {
+    font-family: 'Nunito';
+    src: url('assets/fonts/Nunito-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+body {
+    font-family: Nunito, sans-serif;
+    background: linear-gradient(90deg, #232526 0%, #414345 100%);
+}
+
+.input-shadow {
+    box-shadow:
+        inset 2px 2px 4px rgba(0, 0, 0, 0.25),
+        inset -2px -2px 4px rgba(255, 255, 255, 0.05);
+}
+
+.shadow-inset {
+    box-shadow:
+        inset 18px 18px 36px 0 rgba(163, 177, 198, 0.5), inset -18px -18px 36px 0 rgba(255, 255, 255, 0.4)
+}
