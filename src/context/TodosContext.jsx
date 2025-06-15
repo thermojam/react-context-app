@@ -1,15 +1,9 @@
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 import { useTodosProvider } from '../hooks/useTodosProvider';
 
-export const TodosContext = createContext();
+export const TodosContext = createContext(null);
 
-export function TodosProvider({ children }) {
+export function TodosContextProvider({ children }) {
     const value = useTodosProvider();
-    return (
-        <TodosContext.Provider value={value}>
-            {children}
-        </TodosContext.Provider>
-    );
+    return <TodosContext.Provider value={value}>{children}</TodosContext.Provider>;
 }
-
-export const useTodos = () => useContext(TodosContext);
